@@ -8,7 +8,7 @@ import java.net.InetSocketAddress;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
-
+import com.sun.net.httpserver.Headers;
 
 /**
  * Hello world!
@@ -16,16 +16,27 @@ import com.sun.net.httpserver.HttpServer;
  */
 public class App 
 {
+	static final int PORT = 8000;
+	static final String CONTEXT = "/test";
+
     public static void main(String[] args) throws Exception {
-        HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
-        server.createContext("/test", new MyHandler());
+    	System.out.println("Http Server starting...");
+        HttpServer server = HttpServer.create(new InetSocketAddress(PORT), 0);
+        server.createContext(CONTEXT, new MyHandler());
         server.setExecutor(null); // creates a default executor
         server.start();
+        System.out.println("Http Server started!");
     }
 
     static class MyHandler implements HttpHandler {
         public void handle(HttpExchange t) throws IOException {
-            String response = "This is the response";
+           
+           System.out.println("MyHandler : Just got a request!");
+            // add the required response header for a PDF file
+      		Headers h = t.getResponseHeaders();
+      		h.add("Content-Type", "application/json");
+
+            String response = "{\"code\" : \"200\", \"text\" : \"This is the response\"}";
             t.sendResponseHeaders(200, response.length());
             OutputStream os = t.getResponseBody();
             os.write(response.getBytes());
