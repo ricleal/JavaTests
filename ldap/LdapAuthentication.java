@@ -6,6 +6,14 @@ import java.io.Console;
 import javax.naming.directory.SearchControls;
 import java.text.MessageFormat;
 
+/*
+Run as:
+
+java -Djavax.net.ssl.keyStore="$J2REDIR/lib/security/cacerts" \
+-Djavax.net.ssl.keyStorePassword=changeit  LdapAuthentication
+*/
+
+
 public class LdapAuthentication {
 
   public static boolean authenticateJndi(String username, String password)
